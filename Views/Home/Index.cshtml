@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.SignalR
+@{
+    ViewBag.Title = "Home";
+}
+
+<div class="row">
+    <h1>ASP.NET core Chat</h1>
+    <p class="lead">A Small Chat Application done with SignalR to be used for stress testing SignalR!.</p>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <h2>Sign in to Chat</h2>
+        <p>
+            Enter your Alias to get started
+        </p>
+        @using (Html.BeginForm( null,null,FormMethod.Post,new {action= "/Chat/Messages",id = "chat-form"}))
+        {
+            <input type="hidden" id="token" name="token">
+            <input type="text" id="username" name="username">
+            <button type="button" id="signin">Sign in</button>
+        }
+    </div>
+</div>
+<script type="text/javascript" src="/js/tokenapi.js"></script>
