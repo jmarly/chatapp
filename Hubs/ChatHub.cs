@@ -24,6 +24,7 @@ public class ChatHub : Hub
         {
             Console.WriteLine($"Connection {Context.ConnectionId} aborting...");
             Context.Abort();
+            return;
         }
         var principal = Context.User as ClaimsPrincipal;
         var identity =  principal?.Identity as ClaimsIdentity;
@@ -40,6 +41,7 @@ public class ChatHub : Hub
         if (user == null)
         {
             Context.Abort();
+            return;
         }
         await Clients.All.SendAsync("ReceiveMessage", user?.UserName, message);
     }
