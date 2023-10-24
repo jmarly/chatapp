@@ -32,7 +32,7 @@ public class ChatHub : Hub
         var message = $"{user?.UserName} has joined.";
         await Clients.All.SendAsync("ReceiveMessage", "", message);
     }
-
+    
     public async Task SendMessage(string message)
     {
         var identity = Context.User?.Identity as ClaimsIdentity;
@@ -44,5 +44,10 @@ public class ChatHub : Hub
             return;
         }
         await Clients.All.SendAsync("ReceiveMessage", user?.UserName, message);
+    }
+
+    public override Task OnDisconnectedAsync(Exception? exception)
+    {
+        return Task.CompletedTask;
     }
 }
