@@ -3,23 +3,25 @@ using System.Text;
 
 namespace net.applicationperformance.ChatApp.Auth;
 
-public class Token
+public static class Token
 { 
     public static string ComputeToken(Guid id, string userName)
     {
-        var bytes = Encoding.UTF8.GetBytes(userName+id.ToString());
-        var hashBytes = SHA256.HashData(bytes);
-
-        var builder = new StringBuilder($"{id.ToString()}:");
-        foreach (var b in hashBytes)
+        if (id == Guid.Empty)
         {
-            builder.Append(b.ToString("x2"));
+            return string.Empty;
         }
 
+        if (userName == string.Empty)
+        {
+            return string.Empty;
+        }
         
-        var arr =  Encoding.UTF8.GetBytes(builder.ToString());
-
-        return Convert.ToBase64String(arr);
+        const string extraKey = $"fdsfkl;kfjflkj455rttrtret4ttregdfggdfgfgdf24554frgfgdfgdfgb$#43434"; // need to store somewhere else obviously...
+        var bytes = Encoding.UTF8.GetBytes(userName+id.ToString()+extraKey);
+        var hashBytes = SHA256.HashData(bytes);
+        var idBytes = Encoding.UTF8.GetBytes(id.ToString()+":");
+        return Convert.ToBase64String(idBytes.Concat(hashBytes).ToArray());
     }
 
     private static (Guid, string) ParseToken(string token)
@@ -30,7 +32,7 @@ public class Token
             var decoded = Encoding.UTF8.GetString(arr).Split(":");
             return (new Guid(decoded[0]), decoded[1]);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return (Guid.Empty, "");
         }

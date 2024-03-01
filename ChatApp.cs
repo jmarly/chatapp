@@ -8,12 +8,10 @@ public static class ChatApp
     {
         CreateHostBuilder(args).Build().Run();
     }
-
-    private static IWebHostBuilder CreateHostBuilder(string[] args)
-    {
-        var host = WebHost.CreateDefaultBuilder(args);
-        host.UseStartup<Startup>();
-        return host;
-    }
-
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
 }
