@@ -4,6 +4,9 @@
  * - kick of our repositories
  * - and bring up the SignalR Hubs
  */
+
+using net.applicationperformance.ChatApp.Models;
+
 namespace net.applicationperformance.ChatApp.Config;
 using Repositories;
 
@@ -14,18 +17,20 @@ public class Startup
 {
     public Startup(IConfiguration configuration)
     {
-        Configuration = configuration; ;
+        Configuration = configuration;
     }
 
     private IConfiguration Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services)
     {
+        
         // Register services here
         services.AddControllers();
         services.AddSignalR();
         services.AddMvc();
-        services.AddSingleton(new UserRepository());
+        new UserRepository();
+        services.AddSingleton<IUserRepository,UserRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

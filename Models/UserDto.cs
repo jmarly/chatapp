@@ -9,6 +9,13 @@ public class UserDto : IDto<Guid>
         Password = password;
     }
 
+    public UserDto(Guid id, string email, string password)
+    {
+        Id = id;
+        Email = email;
+        Password = password;
+    }
+
     public Guid Id { get; set; }
     public string UserName { get; set; }
     public string Email { get; set; }

@@ -8,9 +8,9 @@ using Models;
 [Controller]
 public class ChatController : Controller
 {
-    private readonly IRepositoryService<Guid,UserDto> _userRepository;
+    private readonly IUserRepository _userRepository;
 
-    public ChatController(UserRepository repo)
+    public ChatController(IUserRepository repo)
     {
         _userRepository = repo;
     }

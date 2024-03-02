@@ -2,12 +2,10 @@ using System.Collections.Concurrent;
 namespace net.applicationperformance.ChatApp.Repositories;
 using Models;
 
-public abstract class RepositoryBase<TK, T> : IRepositoryService<TK, T> 
+public abstract class RepositoryBase<TK, T> : IRepositoryBase<TK,T>
     where T : IDto<TK>
     where TK : notnull
-     
 {
-
     private readonly ConcurrentDictionary<TK, T> _repo = new ConcurrentDictionary<TK, T>();
     public  abstract TK NewId { get; }
     public abstract TK NullId { get; }

@@ -1,25 +1,22 @@
 using System.Linq.Expressions;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
-
 namespace net.applicationperformance.ChatApp.Hubs;
 using Repositories;
 using Auth;
 public class ChatHub : Hub
 {
-    private readonly UserRepository _users;
-    public ChatHub(UserRepository repo)
-    {
-        _users = repo;
-    }
+    private readonly IUserRepository repo;
 
+    public ChatHub(IUserRepository repo)
+    {
+        this.repo = repo;
+    }
     public async Task JoinChatHub(string token)
     {
         Console.WriteLine($"Join request from {token}.");
         var id = Token.ExtractId(token);
-        var user = _users.Get(id);
+        var user = repo.Get(id);
         if (id == Guid.Empty || user == null || !Token.ValidateToken(user.UserName, token))
         {
             Console.WriteLine($"Connection {Context.ConnectionId} aborting...");
@@ -37,7 +34,7 @@ public class ChatHub : Hub
     {
         var identity = Context.User?.Identity as ClaimsIdentity;
         var id = identity?.Claims.First().Value;
-        var user = _users.Get(new Guid(id));
+        var user = repo.Get(new Guid(id));
         if (user == null)
         {
             Context.Abort();

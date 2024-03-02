@@ -1,29 +1,31 @@
 using Microsoft.AspNetCore.Mvc;
 
 namespace net.applicationperformance.ChatApp.Controllers;
-using Repositories;
 using Models;
-using Auth;
+using Repositories;
 
-[Route("/api/TokenApi")]
 [ApiController]
+[Route("/api/TokenApi")]
+
 public class TokenApiController : ControllerBase
 {
-    private readonly IRepositoryService<Guid,UserDto> _users;
-    
-    public TokenApiController(UserRepository repo)
+    private readonly IUserRepository repo;
+
+    public TokenApiController(IUserRepository repo)
     {
-        _users = repo;
+        this.repo = repo;
     }
     
     [HttpPost]
     [Route("/api/TokenApi/SignIn")]
     public IActionResult SignIn([FromBody] TokenRequest req)
     {
-        var id = _users.Add(new UserDto(req.UserName, "" ,""));
-        return Ok(new
+        var users = new BusinessLogic.Users(repo);
+        var tk = users.SignIn(req.UserName, "", "");
+
+       return Ok(new
         {
-            token = Token.ComputeToken(id,req.UserName)
+            token = tk
         });
     }
 }
