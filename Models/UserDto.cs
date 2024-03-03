@@ -1,23 +1,10 @@
 namespace net.applicationperformance.ChatApp.Models;
 
-public class UserDto : IDto<Guid>
+public class UserDto(Guid id, string userName, string email, string password)
+    : IDto<Guid>
 {
-    public UserDto(string userName, string email,string password)
-    {
-        UserName = userName;
-        Email = email;
-        Password = password;
-    }
-
-    public UserDto(Guid id, string email, string password)
-    {
-        Id = id;
-        Email = email;
-        Password = password;
-    }
-
-    public Guid Id { get; set; }
-    public string UserName { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
+    public Guid Id { get; set; } = id;
+    public string UserName { get; set; } = userName;
+    public string Email { get; set; } = email;
+    public string Password { get; set; } = password;
 }

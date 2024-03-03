@@ -10,7 +10,7 @@ public class Users(IUserRepository repo)
 {
     public string SignIn(string userName, string email, string password)
     {
-        var id = repo.Add(new UserDto(userName, email, password));
+        var id = repo.Add(new UserDto(Guid.Empty, userName, email, password));
         return Token.ComputeToken(id, userName);
     }
     

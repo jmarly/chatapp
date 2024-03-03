@@ -1,17 +1,11 @@
-using System.Linq.Expressions;
 using System.Security.Claims;
 using Microsoft.AspNetCore.SignalR;
 namespace net.applicationperformance.ChatApp.Hubs;
 using Repositories;
 using Auth;
-public class ChatHub : Hub
-{
-    private readonly IUserRepository repo;
 
-    public ChatHub(IUserRepository repo)
-    {
-        this.repo = repo;
-    }
+public class ChatHub(IUserRepository repo) : Hub
+{
     public async Task JoinChatHub(string token)
     {
         Console.WriteLine($"Join request from {token}.");
@@ -34,6 +28,11 @@ public class ChatHub : Hub
     {
         var identity = Context.User?.Identity as ClaimsIdentity;
         var id = identity?.Claims.First().Value;
+        if (id == null)
+        {
+            Context.Abort();
+            return;
+        }
         var user = repo.Get(new Guid(id));
         if (user == null)
         {

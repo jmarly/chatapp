@@ -20,6 +20,10 @@ public class TokenApiController : ControllerBase
     [Route("/api/TokenApi/SignIn")]
     public IActionResult SignIn([FromBody] TokenRequest req)
     {
+        if (req.UserName == null )
+        {
+            return NotFound();
+        }
         var users = new BusinessLogic.Users(repo);
         var tk = users.SignIn(req.UserName, "", "");
 
